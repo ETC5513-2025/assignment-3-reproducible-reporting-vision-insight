@@ -7,3 +7,13 @@ format:
     toc-depth: 2
     number-sections: true
 ---
+
+# Results
+
+# Discussion, conclusion and recommendations
+
+## Discussion
+
+## Conclusion
+
+## Recommendations
