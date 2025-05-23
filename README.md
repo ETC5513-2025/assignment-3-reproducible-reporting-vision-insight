@@ -2,8 +2,8 @@
 
 Group Members:
 
-*
-*
-*
+*Sandhya Erland Chandrasekar
+*Xinyu Wang
+*Dhruvin Rajendrabhai Modh
 
-Topic: 
+Topic: Pedestrian Activity Analysis in Melbourne

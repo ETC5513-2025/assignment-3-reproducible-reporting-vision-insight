@@ -1,0 +1,9 @@
+---
+title: "Pedestrian Activity Analysis in Melbourne"
+author: "Vision Insight"
+format:
+  pdf:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+---
