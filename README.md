@@ -6,4 +6,4 @@ Group Members:
 *Xinyu Wang
 *Dhruvin Rajendrabhai Modh
 
-Topic: Pedestrian Activity Analysis in Melbourne
+Topic: Global Plastic Waste by Country
