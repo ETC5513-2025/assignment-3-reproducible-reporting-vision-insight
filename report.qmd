@@ -7,3 +7,89 @@ format:
     toc-depth: 2
     number-sections: true
 ---
+
+## **Methodology**
+
+## 
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(knitr)
+
+```
+
+The analysis was conducted using the “Plastic Waste Around the World” dataset, which contains country-level data on plastic waste generation, recycling rates, and coastal vulnerability. The dataset was imported from a GitHub source and processed in R using reproducible and version-controlled workflows.
+
+Upon loading the dataset, we conducted several preprocessing steps:
+
+1\. **Variable Cleaning and Transformation:** All column names were standardized using \`janitor::clean_names()\`. Variables with missing values, particularly \`per_capita_waste_kg\` and \`coastal_waste_risk\`, were excluded from analysis. The continuous variable \`recycling_rate\` was binned into three categories: "Low", "Medium", and "High" recycling performance, using quantile-based thresholds.
+
+2\. **Derived Metrics**: We introduced a new variable, \`total_waste_per_person_mt\`, calculated by dividing \`total_plastic_waste_mt\` by an estimated population derived from total waste and per capita rates. This derived variable enables us to assess plastic production intensity across countries more consistently.
+
+3\. **Risk-based Grouping**: Countries were grouped by \`coastal_waste_risk\` (Low, Medium, High) and stratified by binned recycling performance. This allowed for a multifaceted analysis of waste management practices in different geographic and policy contexts.
+
+```{r}
+
+# Load and clean
+plastic_data <- read_csv("Data/Plastic Waste Around the World.csv") %>%
+  clean_names() %>%
+  filter(!is.na(per_capita_waste_kg), !is.na(coastal_waste_risk), !is.na(recycling_rate))
+
+# Bin recycling rates
+plastic_data <- plastic_data %>%
+  mutate(
+    recycling_category = ntile(recycling_rate, 3),
+    recycling_category = case_when(
+      recycling_category == 1 ~ "Low",
+      recycling_category == 2 ~ "Medium",
+      recycling_category == 3 ~ "High"
+    )
+  )
+
+# Derived variable: total waste per person (in MT)
+plastic_data <- plastic_data %>%
+  mutate(
+    est_population_million = total_plastic_waste_mt * 1e6 / per_capita_waste_kg,
+    waste_per_person_mt = total_plastic_waste_mt / est_population_million
+  )
+```
+
+4\. **Visualization and Tabulation**: We created two key outputs:
+
+Figure 1 : A bar chart of the top 10 countries by per capita plastic waste, with reordered factors and enhanced labels.
+
+Table 1 : A grouped summary table showing the mean and standard deviation of plastic waste variables stratified by coastal risk level.
+
+```{r}
+top10_enhanced <- plastic_data %>%
+  arrange(desc(per_capita_waste_kg)) %>%
+  slice(1:10)
+
+ggplot(top10_enhanced, aes(x = reorder(country, per_capita_waste_kg), y = per_capita_waste_kg, fill = recycling_category)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Top 10 Countries by Per Capita Plastic Waste",
+    x = "Country",
+    y = "Plastic Waste (kg per person)",
+    fill = "Recycling Category"
+  ) +
+  theme_minimal()
+
+```
+
+```{r}
+summary_table <- plastic_data %>%
+  group_by(coastal_waste_risk) %>%
+  summarise(
+    Mean_Total_Waste_MT = mean(total_plastic_waste_mt, na.rm = TRUE),
+    SD_Total_Waste_MT = sd(total_plastic_waste_mt, na.rm = TRUE),
+    Mean_Per_Capita_KG = mean(per_capita_waste_kg, na.rm = TRUE),
+    SD_Per_Capita_KG = sd(per_capita_waste_kg, na.rm = TRUE),
+    Mean_Recycling = mean(recycling_rate, na.rm = TRUE)
+  )
+
+kable(summary_table, digits = 2)
+
+```
