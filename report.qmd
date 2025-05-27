@@ -16,6 +16,7 @@ format:
     echo: false
 editor: visual
 ---
+
 ## Executive Summary
 
 This report investigates global plastic waste patterns, focusing on 165 countries with varying recycling practices and environmental risks. We explore how per capita plastic waste and national recycling rates relate to coastal pollution vulnerability. Using figures and tables, we highlight the countries with the most plastic intensity and evaluate systemic differences. The findings offer useful guidance for policy improvements and environmental planning worldwide.
@@ -114,4 +115,47 @@ summary_table <- plastic_data %>%
 kable(summary_table, digits = 2)
 
 ```
+
+
+# Results
+```{r}
+#| label:  tbl-summarytable
+#| tbl-cap: "Plastic Waste Indicators by Coastal Risk Level"
+#| echo: true
+#| warning: false
+#| message: false
+
+library(readr)
+library(dplyr)
+library(janitor)
+library(knitr)
+
+# Read the CSV file using a relative path
+plastic_data <- read_csv("data/Plastic Waste Around the World.csv")
+
+# Clean column names (convert to lower case with underscores)
+plastic_data <- clean_names(plastic_data)
+
+# Group by coastal risk level and calculate summary statistics
+summarytable <- plastic_data %>%
+  group_by(coastal_waste_risk) %>%
+  summarise(
+    `Per_Capita` = mean(per_capita_waste_kg, na.rm = TRUE),
+    `Total_Capita` = mean(total_plastic_waste_mt, na.rm = TRUE),
+    `SD(Total)` = sd(total_plastic_waste_mt, na.rm = TRUE),
+    `Mean Recycling(%)` = mean(recycling_rate, na.rm = TRUE)
+  ) %>%
+  arrange(match(coastal_waste_risk, c("Very_High", "High", "Medium", "Low")))  
+
+# Display the table with two decimal places
+kable(summarytable, digits = 2,  align = "c")
+
+
+```
+As shown in @tbl-summarytable, plastic waste data from 165 countries is grouped by coastal risk level.
+
+Very High risk countries have the lowest waste per person (33.68 kg), but they still produce the second-largest total waste (2.52 million tonnes), likely due to large populations.Medium risk countries have the highest plastic waste per person (163.46 kg) and also the highest total waste (2.94 million tonnes). This means people in these countries use a lot of plastic, and the overall burden is also high.High risk countries show medium levels of waste per person (89.67 kg), but they have the lowest average recycling rate (5.50%) and the largest difference in total waste between countries (standard deviation of 7.44).Low risk countries produce the smallest amount of total waste (0.97 million tonnes), have more similar waste levels across countries (standard deviation of 1.30), and the highest recycling rate (19.66%).
+
+This shows that coastal waste risk is not simply based on how much waste each person produces. Other factors, like population size and waste system quality, also play an important role.  
+
 
