@@ -1,12 +1,33 @@
 ---
-title: "Global Plastic Waste by Country"
-author: "Vision Insight"
+title: "Global Plastic Waste Report"
+author: "Dhruvin Modh, Sandhya Erland Chandrasekar, Xinyu Wang"
 format:
   pdf:
     toc: true
     toc-depth: 2
     number-sections: true
+    theme: metropolis
+    echo: false
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    theme: metropolis
+    echo: false
+editor: visual
 ---
+## Executive Summary
+
+This report investigates global plastic waste patterns, focusing on 165 countries with varying recycling practices and environmental risks. We explore how per capita plastic waste and national recycling rates relate to coastal pollution vulnerability. Using figures and tables, we highlight the countries with the most plastic intensity and evaluate systemic differences. The findings offer useful guidance for policy improvements and environmental planning worldwide.
+
+## Introduction
+
+Plastic waste is a growing global concern, particularly for countries near coastlines. Poor waste management not only pollutes land ecosystems but also threatens marine environments. This report aims to analyze patterns in plastic waste production, recycling performance, and coastal pollution risk using a recent global dataset. The dataset includes 165 countries and features metrics such as total plastic waste, per capita generation, and recycling rates.
+
+By comparing countries based on their waste intensity and risk levels, we seek to understand which factors contribute to environmental vulnerability. We use both descriptive and comparative methods, and summarize our findings through visualizations and aggregated statistics. Our focus is on highlighting regional disparities and identifying outliers.
+
+The purpose of this analysis is to provide actionable insights for decision-makers in environmental and public policy sectors. The report contributes to a broader understanding of how waste systems interact with geography, policy, and infrastructure.
+
 
 ## **Methodology**
 
@@ -93,3 +114,4 @@ summary_table <- plastic_data %>%
 kable(summary_table, digits = 2)
 
 ```
+
