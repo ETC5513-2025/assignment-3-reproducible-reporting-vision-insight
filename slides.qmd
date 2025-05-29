@@ -1,6 +1,6 @@
 ---
 title: "Global Plastic Waste Report"
-author: "Dhruvin Modh, Sandhya Erland Chandrasekar, Xingyu Wang"
+author: "Dhruvin Modh, Sandhya Erland Chandrasekar, Xinyu Wang"
 format: 
   revealjs:
     theme: simple
