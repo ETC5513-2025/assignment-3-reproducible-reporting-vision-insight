@@ -193,3 +193,9 @@ This study shows that we can’t fully understand coastal plastic pollution just
 -   Focus on Areas with High Population: In places where many people live close together, it is more helpful to improve waste collection and treatment instead of only focusing on recycling. For example, cities can place smart bins on streets or use mobile waste trucks to reach crowded areas more easily and keep the environment clean.
 
 -   Help Countries That Struggle and Share Good Ideas: Some countries in the Medium and High Risk groups have more trouble managing plastic waste. These countries should receive more support through better rules and stronger recycling programs. At the same time, countries that already have good systems can share their experience so that others can learn and use the same methods in their own way.
+
+## **Reference**
+
+The dataset used in this analysis comes from a public GitHub repository[^1].
+
+[^1]: [Plastic Waste Around the World Dataset](https://github.com/Pranu580/Plastic-Waste-Around-the-World-Data-Analysis/blob/main/Plastic%20Waste%20Around%20the%20World.csv) by Pranu580 (GitHub, 2022).
