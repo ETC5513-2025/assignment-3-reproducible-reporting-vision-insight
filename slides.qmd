@@ -7,6 +7,14 @@ format:
     slide-number: true
     transition: slide
     toc: true
+    toc-depth: 2
+    center: true
+    incremental: true
+    width: 1280
+    height: 720
+    css: styles.css
+    embed-resources: true
+    highlight-style: github
 editor: visual
 ---
 
@@ -34,3 +42,27 @@ editor: visual
 -   Coastal plastic waste risk level
 
 **Source:** The dataset is retrieved from a publicly available GitHub repository called **Pranu580** that compiles plastic waste statistics from multiple global environmental datasets.
+
+##  Methods
+
+-   Data cleaning with janitor, filtering missing values
+-   Binned recycling rate into Low, Medium, High (using quantiles)
+-   Derived population estimates and waste-per-person metrics
+-   Grouped by coastal risk and recycling category
+
+## Top 10 Countries by Per Capita Waste
+
+![Figure Shown: Horizontal bar chart](Figures/Figure1.png){width=60%}
+
+-   Countries: Iceland, Malta, Cyprus, Palau, etc.
+-   High per capita waste in tourist-heavy nations
+-   Color-coded by recycling category (green, orange, red)
+
+## Waste vs. Recycling Rate
+
+![Figure Shown: Horizontal bar chart](Figures/Figure2.png){width=60%}
+
+
+-   Scatter plot with linear trend line
+-   Weak inverse relationship: more waste often correlates with lower recycling
+-   Key insight: High waste ≠ High recycling
