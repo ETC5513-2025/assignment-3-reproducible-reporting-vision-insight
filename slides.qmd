@@ -1,0 +1,36 @@
+---
+title: "Global Plastic Waste Report"
+author: "Dhruvin Modh, Sandhya Erland Chandrasekar, Xinyu Wang"
+format: 
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: slide
+    toc: true
+editor: visual
+---
+
+## Problem Introduction
+
+-   Plastic waste is a growing threat to both land and marine ecosystems.
+-   Many countries generate high levels of plastic but lack efficient recycling systems.
+-   Coastal regions are especially vulnerable to plastic leakage into oceans.
+-   We aim to identify key risk factors and regional disparities in plastic waste patterns.
+
+## Dataset Description
+
+**Dataset:** Plastic Waste Around the World
+
+**Coverage:** - This dataset includes data for 165 individual countries
+
+**Key Variables:**
+
+-   Total plastic waste generated (in metric tonnes)
+
+-   Per capita plastic waste (in kilograms)
+
+-   National recycling rate (in percentage)
+
+-   Coastal plastic waste risk level
+
+**Source:** The dataset is retrieved from a publicly available GitHub repository called **Pranu580** that compiles plastic waste statistics from multiple global environmental datasets.
