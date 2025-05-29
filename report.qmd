@@ -6,23 +6,24 @@ format:
     toc: true
     toc-depth: 2
     number-sections: true
-    theme: metropolis
-    echo: false
-  html:
-    toc: true
-    toc-depth: 2
-    number-sections: true
-    theme: metropolis
-    echo: false
-editor: visual
+    fig-cap-location: top
+    tbl-cap-location: top
+    mainfont: "Arial"
+    keep-tex: false
+    papersize: a4
+    fontsize: 11pt
+    geometry: margin=1in
+execute:
+  echo: true
+  warning: false
+  message: false
 ---
 
-
-## Executive Summary
+## **Executive Summary**
 
 This report investigates global plastic waste patterns, focusing on 165 countries with varying recycling practices and environmental risks. We explore how per capita plastic waste and national recycling rates relate to coastal pollution vulnerability. Using figures and tables, we highlight the countries with the most plastic intensity and evaluate systemic differences. The findings offer useful guidance for policy improvements and environmental planning worldwide.
 
-## Introduction
+## **Introduction**
 
 Plastic waste is a growing global concern, particularly for countries near coastlines. Poor waste management not only pollutes land ecosystems but also threatens marine environments. This report aims to analyze patterns in plastic waste production, recycling performance, and coastal pollution risk using a recent global dataset. The dataset includes 165 countries and features metrics such as total plastic waste, per capita generation, and recycling rates.
 
@@ -30,10 +31,7 @@ By comparing countries based on their waste intensity and risk levels, we seek t
 
 The purpose of this analysis is to provide actionable insights for decision-makers in environmental and public policy sectors. The report contributes to a broader understanding of how waste systems interact with geography, policy, and infrastructure.
 
-
 ## **Methodology**
-
-## 
 
 ```{r}
 library(tidyverse)
@@ -78,11 +76,9 @@ plastic_data <- plastic_data %>%
   )
 ```
 
-4\. **Visualization and Tabulation**: We created two key outputs:
+4\. **Visualization** : We created two key outputs:
 
 Figure 1 : A bar chart of the top 10 countries by per capita plastic waste, with reordered factors and enhanced labels.
-
-Table 1 : A grouped summary table showing the mean and standard deviation of plastic waste variables stratified by coastal risk level.
 
 ```{r}
 top10_enhanced <- plastic_data %>%
@@ -92,6 +88,9 @@ top10_enhanced <- plastic_data %>%
 ggplot(top10_enhanced, aes(x = reorder(country, per_capita_waste_kg), y = per_capita_waste_kg, fill = recycling_category)) +
   geom_col() +
   coord_flip() +
+  scale_fill_manual(
+    values = c("Low" = "red", "Medium" = "gold", "High" = "green")
+  ) +
   labs(
     title = "Top 10 Countries by Per Capita Plastic Waste",
     x = "Country",
@@ -100,25 +99,40 @@ ggplot(top10_enhanced, aes(x = reorder(country, per_capita_waste_kg), y = per_ca
   ) +
   theme_minimal()
 
+
 ```
+
+Figure 2 : A scatter plot showing the relationship between per capita plastic waste and recycling rate across countries. Points are colored by recycling category (Low, Medium, High), with a linear trend line overlaid. This visual highlights patterns in recycling effectiveness relative to plastic consumption intensity.
 
 ```{r}
-summary_table <- plastic_data %>%
-  group_by(coastal_waste_risk) %>%
-  summarise(
-    Mean_Total_Waste_MT = mean(total_plastic_waste_mt, na.rm = TRUE),
-    SD_Total_Waste_MT = sd(total_plastic_waste_mt, na.rm = TRUE),
-    Mean_Per_Capita_KG = mean(per_capita_waste_kg, na.rm = TRUE),
-    SD_Per_Capita_KG = sd(per_capita_waste_kg, na.rm = TRUE),
-    Mean_Recycling = mean(recycling_rate, na.rm = TRUE)
+plastic_data <- plastic_data %>%
+  mutate(
+    recycling_category = ntile(recycling_rate, 3),
+    recycling_category = case_when(
+      recycling_category == 1 ~ "Low",
+      recycling_category == 2 ~ "Medium",
+      recycling_category == 3 ~ "High"
+    )
   )
+ggplot(plastic_data, aes(x = per_capita_waste_kg, y = recycling_rate)) +
+  geom_point(aes(color = recycling_category), size = 2, alpha = 0.7) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed") +
+  scale_color_manual(
+    values = c("High" = "green", "Medium" = "orange", "Low" = "red")
+  ) +
+  labs(
+    title = "Per Capita Plastic Waste vs. Recycling Rate",
+    x = "Per Capita Plastic Waste (kg)",
+    y = "Recycling Rate (%)",
+    color = "Recycling Category"
+  ) +
+  theme_minimal()
 
-kable(summary_table, digits = 2)
 
 ```
 
+## **Results**
 
-# Results
 ```{r}
 #| label:  tbl-summarytable
 #| tbl-cap: "Plastic Waste Indicators by Coastal Risk Level"
@@ -153,31 +167,29 @@ kable(summarytable, digits = 2,  align = "c")
 
 
 ```
+
 As shown in @tbl-summarytable, plastic waste data from 165 countries is grouped by coastal risk level.
 
 Very High risk countries have the lowest waste per person (33.68 kg), but they still produce the second-largest total waste (2.52 million tonnes), likely due to large populations.Medium risk countries have the highest plastic waste per person (163.46 kg) and also the highest total waste (2.94 million tonnes). This means people in these countries use a lot of plastic, and the overall burden is also high.High risk countries show medium levels of waste per person (89.67 kg), but they have the lowest average recycling rate (5.50%) and the largest difference in total waste between countries (standard deviation of 7.44).Low risk countries produce the smallest amount of total waste (0.97 million tonnes), have more similar waste levels across countries (standard deviation of 1.30), and the highest recycling rate (19.66%).
 
-This shows that coastal waste risk is not simply based on how much waste each person produces. Other factors, like population size and waste system quality, also play an important role.  
+This shows that coastal waste risk is not simply based on how much waste each person produces. Other factors, like population size and waste system quality, also play an important role.
 
+## **Discussion, Conclusion and Recommendations**
 
-
-# Discussion, Conclusion and Recommendations
-
-## Discussion & Conclusion
+#### Discussion & Conclusion
 
 This study shows that we can’t fully understand coastal plastic pollution just by looking at how much waste people generate or how much gets recycled. We also need to consider consumption habits and how effectively each country manages its waste.
 
- - The Effect of Tourism: Many countries with high plastic waste per person are small islands, such as Iceland and Malta. These places actually recycle quite well. For example, Iceland has the highest plastic waste per person, but also a high recycling rate. This means that the real problem may not be poor waste services, but more waste caused by tourists. In the Maldives, for example, tourists create about five times more waste than local people. Even if the recycling system works well, it is hard to deal with the large increase in waste during busy travel seasons.
+-   The Effect of Tourism: Many countries with high plastic waste per person are small islands, such as Iceland and Malta. These places actually recycle quite well. For example, Iceland has the highest plastic waste per person, but also a high recycling rate. This means that the real problem may not be poor waste services, but more waste caused by tourists. In the Maldives, for example, tourists create about five times more waste than local people. Even if the recycling system works well, it is hard to deal with the large increase in waste during busy travel seasons.
 
- - The Role of Population Density: Very High risk countries may have low waste per person, but their total waste is still high. This is because many people live close together, and waste services are often weak. When millions of people each produce a little plastic waste, the total amount becomes very large.
+-   The Role of Population Density: Very High risk countries may have low waste per person, but their total waste is still high. This is because many people live close together, and waste services are often weak. When millions of people each produce a little plastic waste, the total amount becomes very large.
 
- - Differences in Waste Control: Medium and High risk countries show big differences between each other. Some countries pollute much more than others. This makes it harder to plan and manage resources. On the other hand, Low risk countries have more stable systems. They recycle more and have less difference between countries. These countries can be good examples for others to follow.
+-   Differences in Waste Control: Medium and High risk countries show big differences between each other. Some countries pollute much more than others. This makes it harder to plan and manage resources. On the other hand, Low risk countries have more stable systems. They recycle more and have less difference between countries. These countries can be good examples for others to follow.
 
-## Recommendations
+#### Recommendations
 
- - Improve Waste Management in Tourist Areas: In countries that receive many tourists, it is important to have special plans for busy seasons. Governments can charge a small environmental fee to visitors to help pay for waste services. Shops should be encouraged to use less single-use plastic. Hotels and tourist spots should be required to sort and recycle their waste properly.
+-   Improve Waste Management in Tourist Areas: In countries that receive many tourists, it is important to have special plans for busy seasons. Governments can charge a small environmental fee to visitors to help pay for waste services. Shops should be encouraged to use less single-use plastic. Hotels and tourist spots should be required to sort and recycle their waste properly.
 
- - Focus on Areas with High Population: In places where many people live close together, it is more helpful to improve waste collection and treatment instead of only focusing on recycling. For example, cities can place smart bins on streets or use mobile waste trucks to reach crowded areas more easily and keep the environment clean.
+-   Focus on Areas with High Population: In places where many people live close together, it is more helpful to improve waste collection and treatment instead of only focusing on recycling. For example, cities can place smart bins on streets or use mobile waste trucks to reach crowded areas more easily and keep the environment clean.
 
- - Help Countries That Struggle and Share Good Ideas: Some countries in the Medium and High Risk groups have more trouble managing plastic waste. These countries should receive more support through better rules and stronger recycling programs. At the same time, countries that already have good systems can share their experience so that others can learn and use the same methods in their own way.
-
+-   Help Countries That Struggle and Share Good Ideas: Some countries in the Medium and High Risk groups have more trouble managing plastic waste. These countries should receive more support through better rules and stronger recycling programs. At the same time, countries that already have good systems can share their experience so that others can learn and use the same methods in their own way.
