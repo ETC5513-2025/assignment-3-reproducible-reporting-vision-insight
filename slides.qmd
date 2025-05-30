@@ -45,10 +45,10 @@ editor: visual
 
 ##  Methods
 
--   Data cleaning with janitor, filtering missing values
--   Binned recycling rate into Low, Medium, High (using quantiles)
--   Derived population estimates and waste-per-person metrics
--   Grouped by coastal risk and recycling category
+-   Clean the data and remove missing values
+-   Divided recycling rates into Low, Medium, and High groups
+-   Estimated population and calculated waste per person
+-   Grouped the data by coastal risk level and recycling category
 
 ## Top 10 Countries by Per Capita Waste
 
@@ -70,6 +70,10 @@ editor: visual
 ---
 
 ## Results
+
+Based on the analysis methods above, we found that small tourist-heavy island nations, like Iceland and Malta, tend to have the highest plastic waste per person, and that countries generating more waste often have lower recycling rates.
+
+To better summarize these findings, we created the @tbl-summarytable below.
 
 ```{r}
 #| label:  tbl-summarytable
@@ -96,8 +100,8 @@ plastic_data <- clean_names(plastic_data)
 summarytable <- plastic_data %>%
   group_by(coastal_waste_risk) %>%
   summarise(
-    `Per_Capita` = mean(per_capita_waste_kg, na.rm = TRUE),
-    `Total_Capita` = mean(total_plastic_waste_mt, na.rm = TRUE),
+    `Per_WasteKG` = mean(per_capita_waste_kg, na.rm = TRUE),
+    `Total_WasteMT` = mean(total_plastic_waste_mt, na.rm = TRUE),
     `SD(Total)` = sd(total_plastic_waste_mt, na.rm = TRUE),
     `Mean Recycling(%)` = mean(recycling_rate, na.rm = TRUE)
   ) %>%
@@ -108,20 +112,14 @@ kable(summarytable, digits = 2, align = "c") %>%
   kable_styling(font_size = 24)
 
 ```
-
-As shown in @tbl-summarytable, countries with different coastal risk levels show distinct patterns in plastic waste generation and management.
-
--   Very High risk countries generate low plastic waste per person but large total amounts, likely due to high population density.
 ---
 
--   High risk countries struggle with low recycling rates and inconsistent waste control across regions.
+## Plastic Waste Indicators by Coastal Risk Level
 
--   Medium risk countries show high plastic use both individually and overall, suggesting strong consumption pressure.
+![](table/Table1.png)
 
--   Low risk countries produce less total waste and maintain more stable, efficient recycling systems.
-
-These results suggest that coastal plastic waste risk is shaped not only by how much plastic people use, but also by tourism-driven consumption, population concentration, and waste system effectiveness.
-
+Coastal plastic pollution is not just about per-person use, but also tourism, population density, and waste system quality.
+---
 ## Conclusion & Recommendations
 
 -   **Tourism impact**: In island countries, high waste per person often comes from tourists, not poor systems. For example, in the Maldives, tourists make 5 times more waste than locals.Prepare for busy seasons; use eco-fees and make sure hotels sort waste properly.
